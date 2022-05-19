@@ -8,6 +8,12 @@
 npm install @distinction-dev/firebase-utils
 ```
 
+or
+
+```bash
+yarn add @distinction-dev/firebase-utils
+```
+
 ## Usage
 
 ```ts
