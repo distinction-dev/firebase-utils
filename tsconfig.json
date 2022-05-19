@@ -4,12 +4,15 @@
     "module": "ES6",
     "declaration": true,
     "sourceMap": true,
-    "outDir": "./lib/",
+    "outDir": "./dist/",
     "removeComments": true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
   },
-  "include": ["src/**/*.ts", "test/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+  ]
 }
