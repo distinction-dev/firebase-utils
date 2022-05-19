@@ -83,5 +83,8 @@
   "dependencies": {
     "dayjs": "^1.11.2",
     "firebase": "^9.8.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
