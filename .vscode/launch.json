@@ -17,7 +17,7 @@
       "skipFiles": ["<node_internals>/**", "node_modules/**"]
     },
     {
-      "name": "Debug Jest Tests",
+      "name": "Debug Tests",
       "type": "node",
       "request": "launch",
       "runtimeArgs": [
