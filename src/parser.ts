@@ -1,7 +1,17 @@
 import dayjs from 'dayjs';
 import { DocumentData, Timestamp } from 'firebase/firestore';
 
-export function forFirebase(
+/**
+ * Prepare data before saving into firestore, does 3 important things
+ * - Converts undefined to null since undefined isn't allowed
+ * - Converts Date object to Timestamp
+ * - calls toJSON if available on the obj
+ * - supports multi level objects
+ * @param json Data to save in firebase
+ * @param skipTimeOffset Flag to prevent offsetting Date with timezone
+ * @returns obj that can be safely saved in firestore
+ */
+export function forFirestore(
   json: Record<string, any>,
   skipTimeOffset = true
 ): Record<string, any> {
@@ -25,12 +35,12 @@ export function forFirebase(
       } else if (Array.isArray(value)) {
         value = value.map(v => {
           if (typeof v === 'object') {
-            return forFirebase(v);
+            return forFirestore(v);
           }
           return v;
         });
       } else if (typeof value === 'object') {
-        value = forFirebase(value);
+        value = forFirestore(value);
       }
     }
     returnData[key] = value;
@@ -38,12 +48,26 @@ export function forFirebase(
   return returnData;
 }
 
+/**
+ * Base Object containing properties that may be returned by fromFirestore
+ */
 interface BaseObject {
   id?: string;
   uid?: string;
 }
 
-export function fromFirebase<T extends BaseObject>(
+/**
+ * Parse Firestore Document into a TS interface passed as a generic
+ * - Converts Timestamp to Date():- Also applies timezone offset to the time
+ * - Can handle multi level objects
+ * - Also capable of parsing Arrays
+ * @param d Document from Firebase or any other obj that needs to be parsed
+ * @param identifier field in interface to attach document id to
+ * @param skipTimeOffset Flag used to disable timezone offsetting
+ * @returns {T} an object implementing the Generic that was passed
+ * @template T
+ */
+export function fromFirestore<T extends BaseObject>(
   d: DocumentData | any,
   identifier?: keyof T,
   skipTimeOffset = true
@@ -67,13 +91,13 @@ export function fromFirebase<T extends BaseObject>(
       } else if (Array.isArray(data[key])) {
         res[key] = data[key].map((v: any) => {
           if (typeof v === 'object') {
-            return fromFirebase<typeof data[typeof key]>(v);
+            return fromFirestore<typeof data[typeof key]>(v);
           }
           return v;
         });
       } else if (typeof data[key] === 'object') {
         // parse objects again
-        res[key] = fromFirebase<typeof data[typeof key]>(data[key]);
+        res[key] = fromFirestore<typeof data[typeof key]>(data[key]);
       }
     });
     if (d.id) {
