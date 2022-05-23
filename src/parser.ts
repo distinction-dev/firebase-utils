@@ -23,7 +23,7 @@ export function forFirestore(
       value = null;
     }
     if (value !== null) {
-      if (value instanceof Date) {
+      if (checkIfDate(value)) {
         value = Timestamp.fromDate(value);
         if (!skipTimeOffset) {
           value = Timestamp.fromDate(
@@ -130,6 +130,10 @@ function checkIfTimestamp(obj: any): boolean {
     }
   }
   return false;
+}
+
+function checkIfDate(obj: any): boolean {
+  return Object.prototype.toString.call(obj) === '[object Date]' && !isNaN(obj);
 }
 
 function convertTimestampToDate(obj: any): Date {
