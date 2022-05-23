@@ -13,7 +13,7 @@ import { DocumentData, Timestamp } from 'firebase/firestore';
  */
 export function forFirestore(
   json: Record<string, any>,
-  skipTimeOffset = true
+  skipTimeOffset = false
 ): Record<string, any> {
   const returnData: Record<string, any> = {};
   Object.keys(json).forEach(key => {
@@ -70,7 +70,7 @@ interface BaseObject {
 export function fromFirestore<T extends BaseObject>(
   d: DocumentData | any,
   identifier?: keyof T,
-  skipTimeOffset = true
+  skipTimeOffset = false
 ): T {
   let data: any;
   let res: T;
