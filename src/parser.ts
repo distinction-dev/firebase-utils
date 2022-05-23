@@ -87,7 +87,7 @@ export function fromFirestore<T extends BaseObject>(
         res[key] = data[key].toDate();
         if (!skipTimeOffset) {
           // @ts-ignore
-          res[key] = dayjs(data[key].toDate())
+          res[key] = dayjs(res[key])
             .add(new Date().getTimezoneOffset(), 'm')
             .toDate();
         }
