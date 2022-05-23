@@ -74,7 +74,7 @@ export function fromFirestore<T extends BaseObject>(
 ): T {
   let data: any;
   let res: T;
-  if (typeof d.data === 'function') {
+  if (d !== null && typeof d.data === 'function') {
     data = d.data();
     res = data as T;
   } else {
