@@ -83,11 +83,14 @@ export function fromFirestore<T extends BaseObject>(
   }
   if (data !== null) {
     (Object.keys(data as T) as Array<keyof T>).forEach(key => {
-      if (data[key] instanceof Timestamp && !skipTimeOffset) {
-        // @ts-ignore
-        res[key] = dayjs(data[key].toDate())
-          .add(new Date().getTimezoneOffset(), 'm')
-          .toDate();
+      if (data[key] instanceof Timestamp) {
+        res[key] = data[key].toDate();
+        if (!skipTimeOffset) {
+          // @ts-ignore
+          res[key] = dayjs(data[key].toDate())
+            .add(new Date().getTimezoneOffset(), 'm')
+            .toDate();
+        }
       } else if (Array.isArray(data[key])) {
         res[key] = data[key].map((v: any) => {
           if (typeof v === 'object') {
