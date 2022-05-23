@@ -10,9 +10,12 @@
   ],
   "targets": {
     "main": {
-      "optimize": true
+      "optimize": true,
+      "context": "browser",
+      "outputFormat": "esmodule"
     }
   },
+  "type": "module",
   "scripts": {
     "build": "parcel build --no-source-maps",
     "clean": "rm -rf ./dist/",
