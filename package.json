@@ -10,10 +10,8 @@
   ],
   "targets": {
     "main": {
-      "optimize": true,
       "context": "browser",
-      "outputFormat": "esmodule",
-      "includeNodeModules": true
+      "outputFormat": "esmodule"
     }
   },
   "type": "module",
