@@ -83,8 +83,9 @@ export function fromFirestore<T extends BaseObject>(
   }
   if (data !== null) {
     (Object.keys(data as T) as Array<keyof T>).forEach(key => {
-      if (data[key] instanceof Timestamp) {
-        res[key] = data[key].toDate();
+      if (checkIfTimestamp(data[key])) {
+        // @ts-ignore
+        res[key] = convertTimestampToDate(data[key]);
         if (!skipTimeOffset) {
           // @ts-ignore
           res[key] = dayjs(res[key])
@@ -113,4 +114,36 @@ export function fromFirestore<T extends BaseObject>(
     }
   }
   return res;
+}
+
+function checkIfTimestamp(obj: any): boolean {
+  if (obj instanceof Timestamp) {
+    return true;
+  } else {
+    const keys = Object.keys(obj);
+    if (
+      keys.length === 2 &&
+      keys.includes('nanoseconds') &&
+      keys.includes('seconds')
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function convertTimestampToDate(obj: any): Date {
+  if (typeof obj.toDate === 'function') {
+    return new Date(obj.toDate());
+  } else {
+    const keys = Object.keys(obj);
+    if (
+      keys.length === 2 &&
+      keys.includes('nanoseconds') &&
+      keys.includes('seconds')
+    ) {
+      return new Date(obj.seconds * 1000 + obj.nanoseconds / 1000);
+    }
+  }
+  throw new Error('Unacceptable value provided for timestamp');
 }
