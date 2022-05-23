@@ -119,7 +119,7 @@ export function fromFirestore<T extends BaseObject>(
 function checkIfTimestamp(obj: any): boolean {
   if (obj instanceof Timestamp) {
     return true;
-  } else {
+  } else if (obj !== null && obj !== undefined) {
     const keys = Object.keys(obj);
     if (
       keys.length === 2 &&
