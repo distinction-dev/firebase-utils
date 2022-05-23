@@ -12,7 +12,8 @@
     "main": {
       "optimize": true,
       "context": "browser",
-      "outputFormat": "esmodule"
+      "outputFormat": "esmodule",
+      "includeNodeModules": true
     }
   },
   "type": "module",
