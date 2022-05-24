@@ -11,8 +11,23 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@dist/*": [
+        "dist/*"
+      ]
+    },
+    "lib": [
+      "ES2016",
+      "DOM"
+    ],
+    "noImplicitAny": true,
+    "types": [
+      "mocha"
+    ]
   },
   "include": [
     "src/**/*.ts",
+    "tests/**/*.ts",
   ]
 }
