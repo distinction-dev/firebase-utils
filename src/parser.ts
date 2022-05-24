@@ -27,7 +27,9 @@ export function forFirestore(
         value = Timestamp.fromDate(value);
         if (!skipTimeOffset) {
           value = Timestamp.fromDate(
-            dayjs(value).subtract(new Date().getTimezoneOffset(), 'm').toDate()
+            dayjs(value.toDate())
+              .subtract(new Date().getTimezoneOffset(), 'm')
+              .toDate()
           );
         }
       } else if (typeof value.toJSON === 'function') {
